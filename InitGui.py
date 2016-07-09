@@ -1,5 +1,6 @@
 #***************************************************************************
 #*                                                                         *
+#*   Copyright (c) 2015,2016 looo @ FreeCAD                                *
 #*   Copyright (c) 2015 microelly <microelly2@freecadbuch.de>              * 
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +20,187 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+
+#from __future__ import division
+#import FreeCADGui as Gui
+#from PySide import QtCore, QtGui, QtSvg
+#import numpy as np
+#import time
+
+
+#class PieButton(QtGui.QGraphicsEllipseItem):
+#    def __init__(self, pos=(0, 0), angle_range=(0, 1), size=[50, 50], view=None, parent=None, command=None):
+#        super(PieButton, self).__init__(None, scene=parent)
+#        self.command = command
+#        self.view = view
+#        self._size = size
+#        self._pos = pos
+#        self.angle_range = angle_range
+#        self.setRect(- size[0] / 2, - size[1] / 2, size[0], size[1])
+#        self.draw_icon()
+#        self.setPos(pos[0], pos[1])
+#        self.setPen(QtGui.QPen(QtCore.Qt.gray, 0))
+#        self.hover = False
+
+
+#    def draw_icon(self):
+#        self.setBrush(QtGui.QBrush(QtCore.Qt.gray))
+#        if self.command[2]:
+#            boarder_factor = -4
+#            h = self._size[0] + boarder_factor
+#            w = self._size[1] + boarder_factor
+#            self.renderer = QtSvg.QSvgRenderer(self.command[2])
+#            self.pixmap = QtGui.QPixmap(w, h)
+#            self.pixmap.fill(QtCore.Qt.gray)
+#            self.painter = QtGui.QPainter(self.pixmap)
+#            self.renderer.render(self.painter)
+#            brush = QtGui.QBrush()
+#            brush.setTexture(self.pixmap)
+#            brush.setStyle(QtCore.Qt.RadialGradientPattern)
+#            brush.setTransform(QtGui.QTransform.fromTranslate(w / 2, h / 2))
+#            self.setBrush(brush)
+
+#    def setHover(self, value):
+#        if not self.hover == value:
+#            self.hover = value
+#            if value:
+#                self.setPen(QtGui.QPen(QtCore.Qt.blue, 3))
+#                self.view.setText(self.command[0])
+#            else:
+#                self.setPen(QtGui.QPen(QtCore.Qt.gray, 0))
+
+#    def paint(self, painter, options, widget):
+#        painter.setRenderHints(painter.renderHints() | QtGui.QPainter.Antialiasing);
+#        super(PieButton, self).paint(painter, options, widget)
+
+
+#class PieDialog(QtGui.QGraphicsView):
+#    def __init__(self, key, commands, parent=None):
+#        super(PieDialog, self).__init__(parent)
+#        self.key = key
+#        self.setMouseTracking(True)
+#        self.setWindowFlags(
+#            QtCore.Qt.FramelessWindowHint |
+#            QtCore.Qt.MSWindowsFixedSizeDialogHint)
+#        self.setWindowModality(QtCore.Qt.ApplicationModal)
+#        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+#        self.setDragMode(QtGui.QGraphicsView.NoDrag)
+#        self.blockSignals(True)
+#        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+#        self.setStyleSheet("QGraphicsView {border-style: none; background: transparent;}" )
+#        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+#        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+#        self.setScene(QtGui.QGraphicsScene(self))
+#        self.scene().setSceneRect(-200, -200, 400, 400)
+#        self.center = [0, 0]
+#        self.buttons = []
+#        self.label = QtGui.QGraphicsSimpleTextItem("")
+#        self.scene().addItem(self.label)
+#        self.add_commands(commands)
+#        self.is_on = False
+#        self.is_hover = False
+
+#    def setText(self, text):
+#        self.label.setText(text)
+#        self.label.setPos(-self.label.sceneBoundingRect().width() / 2, 0)
+#        self.label.update()
+
+#    def add_commands(self, commands):
+#        num = len(commands)
+#        r = 100
+#        a = 70
+#        pie_phi = np.linspace(0, np.pi * 2, num + 1)
+#        phi = [(p + pie_phi[i + 1]) / 2 for i, p in enumerate(pie_phi[:-1])]
+#        for i, command in enumerate(commands):
+#            button = PieButton(
+#                [r * np.cos(phi[i]), r * np.sin(phi[i])],
+#                [pie_phi[i], pie_phi[i + 1]],
+#                [a, a], self, self.scene(),
+#                command=command)
+#            self.buttons.append(button)
+
+#    def mouseMoveEvent(self, event=None):
+#        if self.is_on:
+#            r2, angle = self.polarCoordinates
+#            self.is_hover = False
+#            for item in self.buttons:
+#                if (item.angle_range[0] < angle and
+#                    angle < item.angle_range[1] and
+#                    r2 > 3000):
+#                    item.setHover(True)
+#                    self.is_hover = True
+#                else:
+#                    item.setHover(False)
+#            if not self.is_hover:
+#                self.setText("")
+
+#    def resizeEvent(self, event):
+#        pass
+
+#    @property
+#    def polarCoordinates(self):
+#        pos = QtGui.QCursor.pos() - self.center
+#        r2 = pos.x() ** 2 + pos.y() ** 2
+#        angle = np.arctan2(pos.y(), pos.x())
+#        return r2, angle + (angle < 0) * 2 * np.pi
+
+#    def showAtMouse(self):
+#        if not self.is_on:
+#            self.setVisible(True)
+#            self.center = QtGui.QCursor.pos()
+#            self.move(self.center.x()-(self.width()/2), self.center.y()-(self.height()/2))
+#            self.is_on = True
+
+#    def keyPressEvent(self, event):
+#        if event.key() == self.key:
+#            if not event.isAutoRepeat():
+#                print("not autorepeat")
+#                self.hide_menu()
+
+#    def keyReleaseEvent(self, event):
+#        if event.key() == self.key:
+#            self.mouseMoveEvent()
+#            if self.is_hover and not event.isAutoRepeat():
+#                self.hide_menu()
+
+#    def mousePressEvent(self, event):
+#        self.hide_menu()
+
+
+#    def hide_menu(self):
+#        self.is_on = False
+#        self.hide()
+#        for item in self.buttons:
+#            if item.hover:
+#                item.setHover(False)
+#                item.command[1]()
+
+#if __name__ == "__main__":
+#    def part_design(): Gui.activateWorkbench("PartDesignWorkbench")
+#    def part(): Gui.activateWorkbench("PartWorkbench")
+#    def draft(): Gui.activateWorkbench("DraftWorkbench")
+#    def arch(): Gui.activateWorkbench("ArchWorkbench")
+#    def fem(): Gui.activateWorkbench("FemWorkbench")
+#    def sketch(): Gui.activateWorkbench("SketcherWorkbench")
+#    def draw(): Gui.activateWorkbench("DrawingWorkbench")
+#    def mesh(): Gui.activateWorkbench("MeshWorkbench")
+
+#    command_list = [
+#        ["PartDesign", part_design, None],
+#        ["Part", part, None],
+#        ["Draft", draft, None],
+#        ["Arch", arch, None],
+#        ["Fem", fem, None],
+#        ["sketch", sketch, None],
+#        ["draw", draw, None],
+#        ["mesh", mesh, None]]
+
+#    a = PieDialog(QtGui.QKeySequence("TAB"), command_list)
+#    action = QtGui.QAction(None)
+#    action.setShortcut(a.key)
+#    action.triggered.connect(a.showAtMouse)
+#    Gui.getMainWindow().addAction(action)
+
 
 #import FreeCAD,FreeCADGui
 #import datetime
