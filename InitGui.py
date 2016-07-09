@@ -21,6 +21,34 @@
 #*                                                                         *
 #***************************************************************************
 
+# Attribution:
+# http://forum.freecadweb.org/
+# http://www.freecadweb.org/wiki/index.php?title=Code_snippets
+
+# -*- coding: utf-8 -*-
+# causes an action to the mouse click on an object
+# This function remains resident (in memory) with the function "addObserver(s)"
+# "removeObserver(s) # Uninstalls the resident function
+#class SelObserver:
+#    def addSelection(self,doc,obj,sub,pnt):               # Selection object
+    #def setPreselection(self,doc,obj,sub):                # Preselection object
+#        App.Console.PrintMessage("addSelection"+ "\n")
+#        App.Console.PrintMessage(str(doc)+ "\n")          # Name of the document
+#        App.Console.PrintMessage(str(obj)+ "\n")          # Name of the object
+#        App.Console.PrintMessage(str(sub)+ "\n")          # The part of the object name
+#        App.Console.PrintMessage(str(pnt)+ "\n")          # Coordinates of the object
+#        App.Console.PrintMessage("______"+ "\n")
+
+#    def removeSelection(self,doc,obj,sub):                # Delete the selected object
+#        App.Console.PrintMessage("removeSelection"+ "\n")
+#    def setSelection(self,doc):                           # Selection in ComboView
+#        App.Console.PrintMessage("setSelection"+ "\n")
+#    def clearSelection(self,doc):                         # If click on the screen, clear the selection
+#        App.Console.PrintMessage("clearSelection"+ "\n")  # If click on another object, clear the previous object
+#s =SelObserver()
+#FreeCADGui.Selection.addObserver(s)                       # install the function mode resident
+#FreeCADGui.Selection.removeObserver(s)                   # Uninstall the resident function
+
 #from __future__ import division
 #import FreeCADGui as Gui
 #from PySide import QtCore, QtGui, QtSvg
