@@ -370,7 +370,7 @@ def pieMenuStart():
             else:
                 pass
 
-        def mousePressEvent(self, event):
+        def mouseReleaseEvent(self, event):
             paramGet = App.ParamGet("User parameter:BaseApp/PieMenu")
             mode = paramGet.GetString("TriggerMode")
 
