@@ -1864,7 +1864,10 @@ def pieMenuStart():
     if start:
 
         compositingManager = True
-        windowShadow = False
+        if QtCore.qVersion() < "5":
+            windowShadow = False
+        else:
+            windowShadow = True
 
         if platform.system() == "Linux":
             try:
