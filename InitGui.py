@@ -83,7 +83,7 @@ def pieMenuStart():
 
     styleQuickMenu = ("padding: 5px")
 
-    iconClose = QtGui.qApp.style().standardIcon(QtGui.QStyle.SP_DialogCloseButton)
+    iconClose = QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DialogCloseButton)
 
 
     def radiusSize(buttonSize):
