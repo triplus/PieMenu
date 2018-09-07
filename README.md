@@ -1,29 +1,18 @@
 # PieMenu
-PieMenu widget for FreeCAD
+PieMenu widget for FreeCAD to quickly invoke overlaid mouse menu shortcuts to simplify repetetive and time-consuming clicks.
 
-### Installation:
+# Screenshot
+![image](https://user-images.githubusercontent.com/4140247/45217234-51e7e280-b271-11e8-973a-1a80ce5beedd.png)
 
-PieMenu can be installed as FreeCAD module or it can be used as FreeCAD macro. If PieMenu is installed as FreeCAD module it will be available after FreeCAD is started. Install path for FreeCAD modules depends on the operating system used.
+### Installation
+Since FreeCAD v0.16+ PieMenu can be installed via the FreeCAD [Addon Manager](https://github.com/FreeCAD/FreeCAD-addons#1-builtin-addon-manager). 
 
-##### Examples:
+### Usage
+Press the Tab key on the keyboard to invoke PieMenu.
 
-Linux:
+### Development
+To develop PieMenu look for the `InitGui.py` file within your OS's default FreeCAD Mod/ directory. For convenience it can be renamed to PieMenu.FCMacro. Pull Requests are welcomed. Please discuss them on the forum thread beforehand.
 
-`/home/user/.FreeCAD/Mod/PieMenu/InitGui.py`
-
-macOS:
-
-`/Users/user_name/Library/Preferences/FreeCAD/Mod/PieMenu/InitGui.py`
-
-Windows:
-
-`C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\PieMenu\InitGui.py`
-
-
-##### Note:
-
-When PieMenu is used as macro InitGui.py file can be used directly or for convenience it can be renamed to PieMenu.FCMacro.
-
-### Usage:
-
-Press the Tab key on the keyboard to start using PieMenu.
+### Discussion
+Original thread: https://forum.freecadweb.org/viewtopic.php?f=22&t=10892
+Current PieMenu 2.0 Roadmap: https://forum.freecadweb.org/viewtopic.php?f=34&t=29108
