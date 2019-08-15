@@ -32,6 +32,9 @@ def pieMenuStart():
     import FreeCADGui as Gui
     from PySide import QtCore
     from PySide import QtGui
+    import PieMenuLocator as locator
+
+    path = locator.path()
 
     styleButton = ("""
         QToolButton {
@@ -60,13 +63,13 @@ def pieMenuStart():
 
     styleMenuClose = ("""
         QToolButton {
-            background-color: rgba(60,60,60,235);
+            background-color: rgba(60,60,60,255);
+            color: silver;
             border: 1px solid #1e1e1e;
         }
 
         QToolButton::menu-indicator {
-            subcontrol-origin: padding;
-            subcontrol-position: center center;
+            image: none;
         }
 
         """)
@@ -83,7 +86,8 @@ def pieMenuStart():
 
     styleQuickMenu = ("padding: 5px")
 
-    iconClose = QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DialogCloseButton)
+    iconClose = path + "/Resources/icons/PieMenuClose.svg"
+    iconMenu = path + "/Resources/icons/PieMenuQuickMenu.svg"
 
 
     def radiusSize(buttonSize):
@@ -110,7 +114,7 @@ def pieMenuStart():
         button.setProperty("ButtonY", 0)
         button.setGeometry(0, 0, buttonSize, buttonSize)
         button.setIconSize(QtCore.QSize(icon, icon))
-        button.setIcon(iconClose)
+        button.setIcon(QtGui.QIcon(iconClose))
         button.setStyleSheet(styleMenuClose + radius)
         button.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
@@ -125,6 +129,7 @@ def pieMenuStart():
 
     def quickMenu(buttonSize=20):
 
+        icon = iconSize(buttonSize)
         radius = radiusSize(buttonSize)
 
         menu = QtGui.QMenu(mw)
@@ -136,6 +141,8 @@ def pieMenuStart():
         button.setProperty("ButtonY", 32)
         button.setGeometry(0, 0, buttonSize, buttonSize)
         button.setStyleSheet(styleMenuClose + radius)
+        button.setIconSize(QtCore.QSize(icon, icon))
+        button.setIcon(QtGui.QIcon(iconMenu))
         button.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         button.setPopupMode(QtGui.QToolButton
                             .ToolButtonPopupMode.InstantPopup)
