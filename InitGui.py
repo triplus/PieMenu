@@ -1900,6 +1900,7 @@ def pieMenuStart():
         PieMenuInstance = PieMenu()
 
         actionKey = QtGui.QAction(mw)
+        actionKey.setText("Invoke pie menu")
         actionKey.setObjectName("PieMenuShortCut")
         actionKey.setShortcut(QtGui.QKeySequence("TAB"))
         actionKey.triggered.connect(PieMenuInstance.showAtMouse)
