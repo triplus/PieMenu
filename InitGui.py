@@ -1763,6 +1763,26 @@ def pieMenuStart():
         group.SetInt("Radius", 100)
         group.SetInt("Button", 32)
 
+    def onTriggerSequenceChanged(seq):
+        seqAsString = seq.toString()
+
+        if len(seqAsString) == 0:
+            return
+
+        singleSequence = seqAsString.split(', ')[-1]
+
+        keySequenceEdit.setKeySequence(singleSequence)
+        App.ParamGet("User parameter:BaseApp/PieMenu").SetString("triggerShortcut", singleSequence)
+
+        if actionKey:
+            actionKey.setShortcut(keySequenceEdit.keySequence())
+
+    keySequenceEdit = QtGui.QKeySequenceEdit()
+    keySequenceEdit.setKeySequence(App.ParamGet("User parameter:BaseApp/PieMenu").GetString("triggerShortcut") or "TAB")
+    keySequenceEdit.keySequenceChanged.connect(onTriggerSequenceChanged)
+
+    keySequenceLabel = QtGui.QLabel("Trigger shortcut")
+
     def onControl():
 
         for i in mw.findChildren(QtGui.QDialog):
@@ -1776,6 +1796,11 @@ def pieMenuStart():
         pieMenuTab = QtGui.QWidget()
         pieMenuTabLayout = QtGui.QVBoxLayout()
         pieMenuTab.setLayout(pieMenuTabLayout)
+
+        layoutKeySequenceEdit = QtGui.QHBoxLayout()
+        layoutKeySequenceEdit.addWidget(keySequenceLabel)
+        layoutKeySequenceEdit.addStretch(1)
+        layoutKeySequenceEdit.addWidget(keySequenceEdit)
 
         layoutAddRemove = QtGui.QHBoxLayout()
         layoutAddRemove.addWidget(cBox)
@@ -1792,10 +1817,11 @@ def pieMenuStart():
         layoutButton.addStretch(1)
         layoutButton.addWidget(spinButton)
 
-        pieMenuTabLayout.insertLayout(0, layoutAddRemove)
-        pieMenuTabLayout.insertSpacing(1, 24)
-        pieMenuTabLayout.insertLayout(2, layoutRadius)
-        pieMenuTabLayout.insertLayout(3, layoutButton)
+        pieMenuTabLayout.insertLayout(0, layoutKeySequenceEdit)
+        pieMenuTabLayout.insertLayout(1, layoutAddRemove)
+        pieMenuTabLayout.insertSpacing(2, 24)
+        pieMenuTabLayout.insertLayout(3, layoutRadius)
+        pieMenuTabLayout.insertLayout(4, layoutButton)
         pieMenuTabLayout.addStretch(0)
 
         contextTab = QtGui.QWidget()
@@ -1860,6 +1886,7 @@ def pieMenuStart():
         setCheckContext()
 
     mw = Gui.getMainWindow()
+    actionKey = None
     start = True
 
     for act in mw.findChildren(QtGui.QAction):
@@ -1902,7 +1929,7 @@ def pieMenuStart():
         actionKey = QtGui.QAction(mw)
         actionKey.setText("Invoke pie menu")
         actionKey.setObjectName("PieMenuShortCut")
-        actionKey.setShortcut(QtGui.QKeySequence("TAB"))
+        actionKey.setShortcut(keySequenceEdit.keySequence())
         actionKey.triggered.connect(PieMenuInstance.showAtMouse)
         mw.addAction(actionKey)
 
